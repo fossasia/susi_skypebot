@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "botbuilder": "^3.8.1",
+    "http": "0.0.0",
     "request": "^2.81.0",
     "restify": "^4.3.0"
   }

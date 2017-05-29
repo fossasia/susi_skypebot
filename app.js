@@ -1,6 +1,7 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 var request = require('request');
+var http = require('http');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -12,6 +13,10 @@ var connector = new builder.ChatConnector({
     appId: process.env.appId,
     appPassword: process.env.appPassword
 });
+
+setInterval(function() {
+		http.get(process.env.HerokuURL);
+	}, 1200000);
 
 var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
