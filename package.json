@@ -1,0 +1,16 @@
+{
+  "name": "skype-bot",
+  "version": "1.0.0",
+  "description": "SUSI AI Skype Bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "botbuilder": "^3.8.1",
+    "http": "0.0.0",
+    "request": "^2.81.0",
+    "restify": "^4.3.0"
+  }
+}
