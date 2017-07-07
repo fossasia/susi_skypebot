@@ -32,7 +32,6 @@ bot.on('contactRelationUpdate', function(message) {
 });
 //getting response from SUSI API upon receiving messages from User
 bot.dialog('/', function(session) {
-    var msg = session.message.text;
     var options = {
         method: 'GET',
         url: 'http://api.asksusi.com/susi/chat.json',
