@@ -15,8 +15,8 @@ var connector = new builder.ChatConnector({
 });
 
 setInterval(function() {
-		http.get(process.env.HerokuURL);
-	}, 1200000);
+    http.get(process.env.HerokuURL);
+}, 1200000);
 
 var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
@@ -40,12 +40,24 @@ bot.dialog('/', function(session) {
             q: session.message.text
         }
     };
-//sending request to SUSI API for response 
+    //sending request to SUSI API for response
     request(options, function(error, response, body) {
         if (error) throw new Error(error);
-        var ans = (JSON.parse(body)).answers[0].actions[0].expression;
-        //responding back to user
-        session.send(ans);
+        var type = (JSON.parse(body)).answers[0].actions;
+        if (type.length == 1 && type[0].type == "answer") {
+            var ans = (JSON.parse(body)).answers[0].actions[0].expression;
+            session.say(ans, ans);
+        } else if (type.length == 1 && type[0].type == "table") {
+            var data = (JSON.parse(body)).answers[0].data;
+            var columns = type[0].columns;
+            var key = Object.keys(columns);
+            var msg;
 
+            for (var i = 0; i < 10; i++) {
+                msg = "";
+                msg = key[0].toUpperCase() + ": " + data[i][key[0]] + "\n" + key[1].toUpperCase() + ": " + data[i][key[1]] + "\n" + key[2].toUpperCase() + ": " + data[i][key[2]];
+                session.say(msg, msg);
+            }
+        }
     })
 });
