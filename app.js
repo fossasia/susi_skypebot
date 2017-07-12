@@ -58,6 +58,22 @@ bot.dialog('/', function(session) {
                 msg = key[0].toUpperCase() + ": " + data[i][key[0]] + "\n" + key[1].toUpperCase() + ": " + data[i][key[1]] + "\n" + key[2].toUpperCase() + ": " + data[i][key[2]];
                 session.say(msg, msg);
             }
+        } else if (type.length == 2 && type[1].type == "rss"){
+            var data = JSON.parse(body).answers[0].data;
+            var columns = type[1];
+            var key = Object.keys(columns);
+            var msg = [];
+
+            for (var i = 0; i < 4; i++) {
+            if(i==0){
+                msg = (JSON.parse(body)).answers[0].actions[0].expression;
+                session.say(msg, msg);
+            } else{
+                msg = "";
+                msg =key[1].toUpperCase() + ": " + data[i][key[1]] + "\n" + key[2].toUpperCase() + ": " + data[i][key[2]] + "\n" + key[3].toUpperCase() + ": " + data[i][key[3]];
+                session.say(msg, msg);
+              }
+            }
         }
     })
 });
