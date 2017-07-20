@@ -15,8 +15,8 @@ var connector = new builder.ChatConnector({
 });
 
 setInterval(function() {
-		http.get(process.env.HerokuURL);
-	}, 1200000);
+    http.get(process.env.HerokuURL);
+}, 1200000);
 
 var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
@@ -40,6 +40,7 @@ bot.dialog('/', function(session) {
             q: session.message.text
         }
     };
+
 //sending request to SUSI API for response 
 request(options, function(error, response, body) {
         if (error) throw new Error(error);
@@ -75,6 +76,7 @@ request(options, function(error, response, body) {
             var key = Object.keys(columns);
             var msg,title;
 
+
             for (var i = 0; i < 4; i++) {
             if(i==0){
                 msg = (JSON.parse(body)).answers[0].actions[0].expression;
@@ -92,6 +94,7 @@ request(options, function(error, response, body) {
                 .attachments(cards);
 
             session.send(reply);
+
         }
     })
 });
