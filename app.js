@@ -41,11 +41,57 @@ bot.dialog('/', function(session) {
         }
     };
 //sending request to SUSI API for response 
-    request(options, function(error, response, body) {
+request(options, function(error, response, body) {
         if (error) throw new Error(error);
-        var ans = (JSON.parse(body)).answers[0].actions[0].expression;
-        //responding back to user
-        session.send(ans);
+        var type = (JSON.parse(body)).answers[0].actions;
+        var cards = [];
+        if (type.length == 1 && type[0].type == "answer") {
+            var msg = (JSON.parse(body)).answers[0].actions[0].expression;
+            session.say(msg, msg);
+        } else if (type.length == 1 && type[0].type == "table") {
+            var data = (JSON.parse(body)).answers[0].data;
+            var columns = type[0].columns;
+            var key = Object.keys(columns);
+            var msg, title;
+            var count = JSON.parse(body).answers[0].metadata.count;
 
+            for (var i = 0; i < count; i++) {
+                msg = "";
+                msg =key[1].toUpperCase() + ": " + data[i][key[1]] + "\n" + "\n" + key[2].toUpperCase() + ": " + data[i][key[2]];
+                title = data[i][key[0]];
+                cards[i] = new builder.HeroCard(session)
+                    .title(title)
+                    .text(msg)   
+            }
+
+            var reply = new builder.Message(session)
+                .attachmentLayout(builder.AttachmentLayout.carousel)
+                .attachments(cards);
+            session.send(reply);
+
+        } else if (type.length == 2 && type[1].type == "rss"){
+            var data = JSON.parse(body).answers[0].data;
+            var columns = type[1];
+            var key = Object.keys(columns);
+            var msg,title;
+
+            for (var i = 0; i < 4; i++) {
+            if(i==0){
+                msg = (JSON.parse(body)).answers[0].actions[0].expression;
+                session.say(msg, msg);
+            } else{
+                msg =key[2].toUpperCase() + ": " + data[i][key[2]] + "\n" + "\n" + key[3].toUpperCase() + ": " + data[i][key[3]];
+                title  = data[i][key[1]];
+                cards[i] = new builder.HeroCard(session)
+                    .title(title)
+                    .text(msg)
+              }
+            }
+            var reply = new builder.Message(session)
+                .attachmentLayout(builder.AttachmentLayout.carousel)
+                .attachments(cards);
+
+            session.send(reply);
+        }
     })
 });
