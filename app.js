@@ -32,6 +32,7 @@ bot.on('contactRelationUpdate', function(message) {
 });
 //getting response from SUSI API upon receiving messages from User
 bot.dialog('/', function(session) {
+    session.sendTyping();
     var options = {
         method: 'GET',
         url: 'http://api.asksusi.com/susi/chat.json',
@@ -48,6 +49,7 @@ request(options, function(error, response, body) {
         var cards = [];
         if (type.length == 1 && type[0].type == "answer") {
             var msg = (JSON.parse(body)).answers[0].actions[0].expression;
+            session.sendTyping();
             session.say(msg, msg);
         } else if (type.length == 1 && type[0].type == "table") {
             var data = (JSON.parse(body)).answers[0].data;
@@ -68,6 +70,8 @@ request(options, function(error, response, body) {
             var reply = new builder.Message(session)
                 .attachmentLayout(builder.AttachmentLayout.carousel)
                 .attachments(cards);
+
+            session.sendTyping();
             session.send(reply);
 
         } else if (type.length == 2 && type[1].type == "rss"){
@@ -80,6 +84,7 @@ request(options, function(error, response, body) {
             for (var i = 0; i < 4; i++) {
             if(i==0){
                 msg = (JSON.parse(body)).answers[0].actions[0].expression;
+                session.sendTyping();
                 session.say(msg, msg);
             } else{
                 msg =key[2].toUpperCase() + ": " + data[i][key[2]] + "\n" + "\n" + key[3].toUpperCase() + ": " + data[i][key[3]];
@@ -92,7 +97,8 @@ request(options, function(error, response, body) {
             var reply = new builder.Message(session)
                 .attachmentLayout(builder.AttachmentLayout.carousel)
                 .attachments(cards);
-
+            
+            session.sendTyping();
             session.send(reply);
 
         }
