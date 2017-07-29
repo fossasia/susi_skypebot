@@ -41,9 +41,22 @@ bot.dialog('/', function(session) {
             q: session.message.text
         }
     };
-
-//sending request to SUSI API for response 
-request(options, function(error, response, body) {
+    session.sendTyping();
+    if(session.message.text == "Start" || session.message.text == "START" || session.message.text == "start"){
+        var initial_card = new builder.HeroCard(session)
+                .title('SUSI AI')
+                .subtitle('Open Source personal assistant')
+                .text('I am built by open source community Fossasia and I am evolving continuously.')            
+                .buttons([
+           builder.CardAction.openUrl(session, 'https://github.com/fossasia/susi_server', 'See Github')
+        ])
+        
+        var reply = new builder.Message(session)
+                .addAttachment(initial_card);
+        session.sendTyping();
+        session.send(reply);
+    } else {
+        request(options, function(error, response, body) {
         if (error) throw new Error(error);
         var type = (JSON.parse(body)).answers[0].actions;
         var cards = [];
@@ -80,7 +93,6 @@ request(options, function(error, response, body) {
             var key = Object.keys(columns);
             var msg,title;
 
-
             for (var i = 0; i < 4; i++) {
             if(i==0){
                 msg = (JSON.parse(body)).answers[0].actions[0].expression;
@@ -103,4 +115,5 @@ request(options, function(error, response, body) {
 
         }
     })
+    }
 });
