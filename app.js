@@ -32,9 +32,10 @@ bot.on('contactRelationUpdate', function(message) {
 });
 //getting response from SUSI API upon receiving messages from User
 bot.dialog('/', function(session) {
+    session.sendTyping();
     var options = {
         method: 'GET',
-        url: 'http://api.asksusi.com/susi/chat.json',
+        url: 'http://api.susi.ai/susi/chat.json',
         qs: {
             timezoneOffset: '-330',
             q: session.message.text
@@ -82,6 +83,7 @@ bot.dialog('/', function(session) {
             var reply = new builder.Message(session)
                 .attachmentLayout(builder.AttachmentLayout.carousel)
                 .attachments(cards);
+
             session.sendTyping();
             session.send(reply);
 
@@ -94,6 +96,7 @@ bot.dialog('/', function(session) {
             for (var i = 0; i < 4; i++) {
             if(i==0){
                 msg = (JSON.parse(body)).answers[0].actions[0].expression;
+                session.sendTyping();
                 session.say(msg, msg);
             } else{
                 msg =key[2].toUpperCase() + ": " + data[i][key[2]] + "\n" + "\n" + key[3].toUpperCase() + ": " + data[i][key[3]];
