@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: skype
-        image: aliayubkhan/susi_skypebot:latest
+        image: fossasia/susi_skypebot:latest-master
         imagePullPolicy: Always
         env: 
         - name: appId
