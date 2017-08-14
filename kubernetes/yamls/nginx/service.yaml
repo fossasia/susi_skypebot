@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx3
+  namespace: nginx-ingress3
+spec:
+  type: LoadBalancer
+  loadBalancerIP: '104.154.191.115'
+  ports:
+  - port: 80
+    name: http
+  - port: 443
+    name: https
+  selector:
+    app: nginx3

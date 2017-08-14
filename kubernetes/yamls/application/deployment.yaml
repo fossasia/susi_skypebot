@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: skype
+  namespace: skype
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: skype
+    spec:
+      containers:
+      - name: skype
+        image: aliayubkhan/susi_skypebot:latest
+        imagePullPolicy: Always
+        env: 
+        - name: appId
+          value: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        - name: appPassword
+          value: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        ports:
+        - containerPort: 8080
+
