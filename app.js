@@ -42,7 +42,7 @@ bot.dialog('/', function(session) {
         }
     };
     session.sendTyping();
-    if(session.message.text == "Start" || session.message.text == "START" || session.message.text == "start"){
+    if(session.message.text.toLowerCase() == "get started"){
         var initial_card = new builder.HeroCard(session)
                 .title('SUSI AI')
                 .subtitle('Open Source personal assistant')
@@ -55,6 +55,20 @@ bot.dialog('/', function(session) {
                 .addAttachment(initial_card);
         session.sendTyping();
         session.send(reply);
+    } else if(session.message.text.toLowerCase() == "start chatting"){
+        var chat_card = new builder.ThumbnailCard(session)
+            .title('Sample Queries')
+            .text('You can try the following:')
+            .buttons([
+                builder.CardAction.imBack(session, 'What is FOSSASIA?', 'What is FOSSASIA?'),
+                builder.CardAction.imBack(session, 'Who is Einstein?', 'Who is Einstein?'),
+                builder.CardAction.imBack(session, 'Borders with INDIA', 'Borders with INDIA')
+            ]);
+        
+        var reply1 = new builder.Message(session)
+                .addAttachment(chat_card);
+        session.sendTyping();
+        session.send(reply1);
     } else {
         request(options, function(error, response, body) {
         if (error) throw new Error(error);
@@ -113,6 +127,10 @@ bot.dialog('/', function(session) {
             session.sendTyping();
             session.send(reply);
 
+        } else {
+            var msg = "Oops looks like SUSI is taking a break try again later."
+            session.sendTyping();
+            session.say(msg, msg);
         }
     })
     }
